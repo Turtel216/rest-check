@@ -18,7 +18,7 @@
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 
@@ -121,7 +121,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build RestCheck
-        run: stack install
+        run: cabal install
       - name: Run API Tests
         run: restcheck tests/user_api.rc
 

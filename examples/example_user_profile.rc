@@ -1,0 +1,11 @@
+# Define the Request
+GET https://jsonplaceholder.typicode.com/users/1
+Header: Authorization: Bearer my-secret-token
+Header: Accept: application/json
+
+# Define Expectations
+EXPECT Status 200
+EXPECT Latency < 500
+EXPECT JsonPath "username" == "Bret"
+EXPECT JsonPath "address.city" == "Gwenborough"
+

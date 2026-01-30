@@ -17,8 +17,7 @@ common warnings
 
 library
     import:           warnings
-    exposed-modules:  MyLib,
-                      Parser,
+    exposed-modules:  Parser,
                       Executor,
                       Verifier
     -- other-modules:

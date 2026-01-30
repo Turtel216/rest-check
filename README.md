@@ -34,7 +34,10 @@ git clone https://gitlab.com/papakonstantinou/rest-check.git
 cd restcheck
 
 # Build with Cabal 
-cabal build
+stack build
+
+# Install binary to local path (usually ~/.local/bin)
+stack install
 
 ```
 

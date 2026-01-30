@@ -1,0 +1,6 @@
+# Delete user with ID 2
+DELETE https://reqres.in/api/users/2
+Header: Authorization: Bearer token123
+
+EXPECT Status 204 # Successful deletion
+EXPECT Latency < 600

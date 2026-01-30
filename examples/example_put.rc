@@ -1,0 +1,15 @@
+# Update user with ID 2
+PUT https://reqres.in/api/users/2
+Header: Content-Type: application/json
+Header: Authorization: Bearer token123
+
+BODY
+{
+    "name": "Morpheus Updated",
+    "job": "Zion Commander"
+}
+
+EXPECT Status 200
+EXPECT JsonPath "name" == "Morpheus Updated"
+EXPECT JsonPath "job" == "Zion Commander"
+EXPECT Latency < 800

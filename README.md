@@ -10,10 +10,10 @@
 * **Full HTTP Support:** GET, POST, PUT, DELETE with custom headers.
 * **JSON Body Support:** Send complex JSON payloads easily.
 * **Deep Validation:**
-  ** Check Status Codes.
-  ** Set strict Latency thresholds (Performance testing).
-  ** Validate JSON fields using dot-notation (e.g., `user.address.city`).
-  ** Text body substring matching.
+ - Check Status Codes.
+ - Set strict Latency thresholds (Performance testing).
+ - Validate JSON fields using dot-notation (e.g., `user.address.city`).
+ - Text body substring matching.
 * **Colorized Output:** Instant visual feedback (Pass/Fail) in the terminal.
 
 ---
@@ -30,7 +30,7 @@ You need the **Haskell Tool Stack** installed.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/restcheck.git
+git clone https://gitlab.com/papakonstantinou/rest-check.git
 cd restcheck
 
 # Build with Cabal 

@@ -8,6 +8,9 @@ import Data.Void
 import Control.Monad(void)
 import Text.Megaparsec
 import Text.Megaparsec.Char
+import qualified Data.Scientific as Sci
+import Data.Vector (fromList)
+import Data.Aeson (Value(..), object, (.=))
 import qualified Text.Megaparsec.Char.Lexer as L
 
 
@@ -18,6 +21,7 @@ data Expectation
   = ExpectStatus Int
   | ExpectLatency Int      -- Max latency in ms
   | ExpectBodyContains Text
+  | ExpectJsonPath Text Value
   deriving (Show, Eq)
 
 data RequestConfig = RequestConfig
@@ -72,6 +76,15 @@ pBody = do
   content <- manyTill anySingle (lookAhead (void (symbol "EXPECT")) <|> eof)
   return $ T.strip $ T.pack content
 
+pJsonValue :: Parser Value
+pJsonValue = choice
+  [ String <$> lexeme stringLiteral
+  , (\n -> Number (Sci.scientific (fromIntegral n) 0)) <$> integer
+  , Bool True <$ symbol "true"
+  , Bool False <$ symbol "false"
+  , Null <$ symbol "null"
+  ]
+
 -- | Parses the URL (non-space characters)
 pUrl :: Parser Text
 pUrl = lexeme $ do
@@ -110,6 +123,12 @@ pExpectation = do
         _ <- symbol "BodyContains"
         str <- lexeme stringLiteral -- Requires quotes
         return (ExpectBodyContains str)
+    , do
+        _ <- symbol "JsonPath"
+        path <- lexeme stringLiteral
+        _ <- symbol "=="
+        val <- pJsonValue
+        return (ExpectJsonPath path val)
     ]
 
 -- | The Root Parser

@@ -1,0 +1,5 @@
+GET https://jsonplaceholder.typicode.com/users/1
+
+EXPECT Status 200
+EXPECT JsonPath "name" == "Leanne Graham"
+EXPECT JsonPath "address.geo.lat" == "-37.3159"

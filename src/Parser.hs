@@ -5,6 +5,7 @@ module Parser where
 import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Void
+import Control.Monad(void)
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
@@ -23,6 +24,7 @@ data RequestConfig = RequestConfig
   { method       :: HttpMethod
   , url          :: Text
   , headers      :: [(Text, Text)]
+  , body :: Maybe Text
   , expectations :: [Expectation]
   } deriving (Show, Eq)
 
@@ -61,6 +63,14 @@ pMethod = choice
   , PUT    <$ symbol "PUT"
   , DELETE <$ symbol "DELETE"
   ]
+
+pBody :: Parser Text
+pBody = do
+  _ <- symbol "BODY"
+
+  -- Read until "Expect"
+  content <- manyTill anySingle (lookAhead (void (symbol "EXPECT")) <|> eof)
+  return $ T.strip $ T.pack content
 
 -- | Parses the URL (non-space characters)
 pUrl :: Parser Text
@@ -113,13 +123,15 @@ pConfigFile = do
   m <- pMethod
   u <- pUrl
   -- Parse many headers (try needed because headers/expectations look similar initially)
-  hs <- many (try pHeader) 
+  hs <- many (try pHeader)
+  b <- optional pBody
   ex <- many pExpectation
   eof
   return $ RequestConfig
     { method = m
     , url = u
     , headers = hs
+    , body = b
     , expectations = ex
     }
 

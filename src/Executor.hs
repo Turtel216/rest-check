@@ -33,11 +33,18 @@ headersToHeaderList = map toHeader
 
 runRequest :: RequestConfig -> IO ActualResponse
 runRequest config = do
+  -- Parse url
   initialRequest <- parseRequest (unpack $ url config)
 
+  -- Handle body
+  let requestBody = case body config of
+        Nothing -> initialRequest
+        Just b -> setRequestBodyLBS (LBS.fromStrict $ TE.encodeUtf8 b) initialRequest
+
+  -- Set Method and Headers
   let request = setRequestMethod (methodToBS $ method config)
                 $ setRequestHeaders (headersToHeaderList $ headers config)
-                $ initialRequest
+                $ requestBody 
 
   start <- getCurrentTime 
 

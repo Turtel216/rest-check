@@ -1,8 +1,13 @@
-GET https://httpbin.org/get
-
-Header: Accept: application/json
+POST https://httpbin.org/post
+Header: Content-Type: application/json
 Header: User-Agent: RestCheck-CLI
 
+BODY
+{
+  "name": "John Doe",
+  "role": "admin",
+  "score": 100
+}
+
 EXPECT Status 200
-EXPECT Latency < 500
-EXPECT BodyContains "httpbin"
+EXPECT BodyContains "John Doe"

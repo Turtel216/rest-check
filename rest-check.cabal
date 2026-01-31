@@ -47,7 +47,9 @@ executable rest-check
         base ^>=4.18.3.0,
         rest-check,
         text,
-        megaparsec
+        megaparsec,
+        optparse-applicative,
+        async
 
     hs-source-dirs:   app
     default-language: Haskell2010

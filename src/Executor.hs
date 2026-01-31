@@ -12,25 +12,27 @@ import Network.HTTP.Simple
 import qualified Data.ByteString.Lazy as LBS
 import Data.Time.Clock (getCurrentTime, nominalDiffTimeToSeconds, diffUTCTime)
 
+-- | Actual esponse received from server to test against
 data ActualResponse = ActualResponse
- { actualStatus :: Int
- , actualBody :: Text
- , actualLatency :: Int
+ { actualStatus :: Int  -- ^ Actual HTTP Response status received from server
+ , actualBody :: Text   -- ^ Actual Response body from server
+ , actualLatency :: Int -- ^ Actual Server Latency
  } deriving (Show)
 
--- Convert AST Method to ByteString format
+-- | Convert AST Method to ByteString format
 methodToBS :: HttpMethod -> BS.ByteString
 methodToBS GET = "GET"
 methodToBS POST = "POST"
 methodToBS PUT = "PUT"
 methodToBS DELETE = "DELETE"
 
--- Convert parser header to RequestHeaders
+-- | Convert parser header to RequestHeaders
 headersToHeaderList :: [(Text, Text)] -> RequestHeaders
 headersToHeaderList = map toHeader
   where
     toHeader (k, v) = (CI.mk (TE.encodeUtf8 k), TE.encodeUtf8 v)
 
+-- | Run a given http request
 runRequest :: RequestConfig -> IO ActualResponse
 runRequest config = do
   -- Parse url

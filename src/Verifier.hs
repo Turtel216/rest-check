@@ -14,12 +14,14 @@ import qualified Data.Text.Encoding as TE
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Aeson.Key as Key
 
+-- | Tracks if a verification passes or failed
 data CheckStatus = Pass | Fail Text
   deriving (Show, Eq)
 
+-- | Result of verification
 data VerificationResult = VerificationResult
-  { expectation ::Expectation 
-  , status :: CheckStatus
+  { expectation ::Expectation  -- ^ Assertion tested against
+  , status :: CheckStatus      -- ^ verification success/failure
   } deriving (Show)
 
 -- | verifySingle checks one rule against the response
@@ -65,6 +67,8 @@ verifySingle resp expe =
 
   in VerificationResult { expectation = expe, status = resultStatus }
 
+
+-- | Checks reponses against their assertions 
 verifyAll :: ActualResponse -> [Expectation] -> [VerificationResult]
 verifyAll resp = map (verifySingle resp)
 

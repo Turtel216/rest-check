@@ -8,4 +8,3 @@ EXPECT Status 200
 EXPECT Latency < 500
 EXPECT JsonPath "username" == "Bret"
 EXPECT JsonPath "address.city" == "Gwenborough"
-

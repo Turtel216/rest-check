@@ -110,14 +110,14 @@ printResults Options{..} colors results = forM_ results $ \FileResult{..} -> do
         putStrLn $ cRed ++ "  ✗ " ++ cReset ++ desc ++ "\n      → " ++ T.unpack m
       
       MsgError e -> 
-        putStrLn $ cRed ++ "  ⚠ ERROR: " ++ cReset ++ e
+        putStrLn $ cRed ++ "  ERROR: " ++ cReset ++ e
       
       MsgInfo info
-        | verbose   -> putStrLn $ cYellow ++ "  ℹ " ++ cReset ++ info
+        | verbose   -> putStrLn $ cYellow ++ "   " ++ cReset ++ info
         | otherwise -> return ()
       
       MsgSkipped reason ->
-        putStrLn $ cYellow ++ "  ⊘ " ++ cReset ++ reason
+        putStrLn $ cYellow ++ "   " ++ cReset ++ reason
 
 -- | Print summary statistics
 printSummary :: Colors -> [FileResult] -> IO ()

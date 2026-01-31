@@ -14,48 +14,51 @@ import Data.Aeson (Value(..), object, (.=))
 import qualified Text.Megaparsec.Char.Lexer as L
 
 
+-- | Http Methods
 data HttpMethod = GET | POST | PUT | DELETE
   deriving (Show, Eq)
 
+-- | Expected assertions
 data Expectation
-  = ExpectStatus Int
-  | ExpectLatency Int      -- Max latency in ms
-  | ExpectBodyContains Text
-  | ExpectJsonPath Text Value
+  = ExpectStatus Int          -- ^ Expected HTTP Response status code
+  | ExpectLatency Int         -- ^ Max latency in ms
+  | ExpectBodyContains Text   -- ^ Expected substring inside of body
+  | ExpectJsonPath Text Value -- ^ Expected json field
   deriving (Show, Eq)
 
+-- | Declared Http Request
 data RequestConfig = RequestConfig
-  { method       :: HttpMethod
-  , url          :: Text
-  , headers      :: [(Text, Text)]
-  , body :: Maybe Text
-  , expectations :: [Expectation]
+  { method       :: HttpMethod     -- ^ Request HTTP Method
+  , url          :: Text           -- ^ Request URL
+  , headers      :: [(Text, Text)] -- ^ Header definition
+  , body :: Maybe Text             -- ^ Request body
+  , expectations :: [Expectation]  -- ^ Assertions
   } deriving (Show, Eq)
 
 
--- Parser type (Void means we don't have custom error data)
+-- | Parser type
 type Parser = Parsec Void Text
 
--- Handles whitespace and comments starting with #
+-- | Handles whitespace and comments starting with #
 sc :: Parser ()
 sc = L.space
   space1                         -- Consumes whitespace/newlines
   (L.skipLineComment "#")        -- Consumes line comments
-  empty                          -- (No block comments for now)
+  empty
 
--- A wrapper to consume trailing whitespace after a parser
+-- | A wrapper to consume trailing whitespace after a parser
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
 
--- Matches a specific string literal and consumes trailing space
+-- | Matches a specific string literal and consumes trailing space
 symbol :: Text -> Parser Text
 symbol = L.symbol sc
 
--- Parses an integer
+-- | Parses an integer
 integer :: Parser Int
 integer = lexeme L.decimal
 
--- Parses a string literal (quoted "like this")
+-- | Parses a string literal (quoted "like this")
 stringLiteral :: Parser Text
 stringLiteral = fmap T.pack $ char '"' >> manyTill L.charLiteral (char '"')
 
@@ -85,7 +88,7 @@ pJsonValue = choice
   , Null <$ symbol "null"
   ]
 
--- | Parses the URL (non-space characters)
+-- | Parses the URL
 pUrl :: Parser Text
 pUrl = lexeme $ do
   urlChars <- takeWhileP (Just "URL character") (\c -> c /= ' ' && c /= '\n' && c /= '\r')

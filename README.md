@@ -94,18 +94,31 @@ restcheck api_test.rc
 ### 3. View Output
 
 ```text
---- Reading Config ---
-Running GET request to https://jsonplaceholder.typicode.com/users/1...
-  -> Status: 200
-  -> Latency: 85ms
-
---- Verifying Expectations ---
-[PASS] ExpectStatus 200
-[PASS] ExpectLatency < 500
-[PASS] ExpectJsonPath "username" == "Bret"
-[PASS] ExpectJsonPath "address.city" == "Gwenborough"
-
+━━━ examples/example_get.rc ━━━
+  ✓ ExpectStatus 200
+  ✓ ExpectLatency 500
+  ✓ ExpectJsonPath "username" (String "Bret")
+  ✓ ExpectJsonPath "address.city" (String "Gwenborough")
 ```
+
+### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `CONFIG_FILES...` | One or more config files to process (required) |
+
+### Options
+
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--verbose` | `-v` | Enable verbose output with additional details about requests and responses |
+| `--quiet` | `-q` | Minimal output showing only failures (suppresses passing tests) |
+| `--no-color` | | Disable colored output (useful for CI/CD or piping to files) |
+| `--concurrent` | `-c` | Process multiple config files concurrently for faster execution |
+| `--timeout SECONDS` | `-t` | Set request timeout in seconds |
+| `--dry-run` | `-n` | Parse and validate config files without executing HTTP requests |
+| `--version` | `-V` | Show version information |
+| `--help` | `-h` | Show help message |
 
 ---
 

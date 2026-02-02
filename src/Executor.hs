@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+-- | Executing defined http requests
 module Executor where
 
 import Parser  (RequestConfig(..), HttpMethod(..))

@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+-- | Parser for the RestCheck DSL
 module Parser where
 
 import Data.Text (Text)

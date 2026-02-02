@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RankNTypes #-}
 
+-- | Check actual HTTP response against expectations defined in the DSL
 module Verifier where
 
 import Data.Text (Text)

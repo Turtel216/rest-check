@@ -1,3 +1,4 @@
+-- | Command line interface definition
 module Cli where
 
 import Options.Applicative

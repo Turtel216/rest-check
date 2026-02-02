@@ -7,14 +7,13 @@ module Main where
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
 import System.Exit( exitFailure, exitSuccess)
-import Parser (parseConfig, RequestConfig(..), Expectation(..))
-import Executor (runRequest, ActualResponse(..))
+import Parser (parseConfig, RequestConfig(..))
+import Executor (runRequest)
 import Verifier (verifyAll, VerificationResult(..), CheckStatus(..))
 import Text.Megaparsec (errorBundlePretty)
 import Control.Monad (forM_, when, unless)
 import Control.Concurrent.Async (mapConcurrently)
 import Options.Applicative
-import Data.Semigroup ((<>))
 import Control.Exception (try, SomeException, displayException)
 import Cli
 
@@ -112,8 +111,8 @@ printResults Options{..} colors results = forM_ results $ \FileResult{..} -> do
       MsgError e -> 
         putStrLn $ cRed ++ "  ERROR: " ++ cReset ++ e
       
-      MsgInfo info
-        | verbose   -> putStrLn $ cYellow ++ "   " ++ cReset ++ info
+      MsgInfo mInfo
+        | verbose   -> putStrLn $ cYellow ++ "   " ++ cReset ++ mInfo
         | otherwise -> return ()
       
       MsgSkipped reason ->

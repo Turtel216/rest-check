@@ -9,8 +9,7 @@ import Control.Monad(void)
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Data.Scientific as Sci
-import Data.Vector (fromList)
-import Data.Aeson (Value(..), object, (.=))
+import Data.Aeson (Value(..))
 import qualified Text.Megaparsec.Char.Lexer as L
 
 
